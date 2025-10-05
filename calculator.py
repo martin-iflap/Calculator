@@ -28,10 +28,57 @@ class Calculator(ctk.CTk):
         OutputLabel(self, 0, "se", main_font, self.formula_string)
         OutputLabel(self, 1, "e", result_font, self.result_string)
 
-        Button(parent=self,
-               text=OPERATORS["clear"]["text"],
-               col=OPERATORS["clear"]["col"],
-               row=OPERATORS["clear"]["row"])
+        # Button(parent=self,
+        #        func=self.invert,
+        #        text=OPERATORS["invert"]["text"],
+        #        col=OPERATORS["invert"]["col"],
+        #        row=OPERATORS["invert"]["row"],
+        #        font=main_font)
+
+        for key in OPERATORS.keys():
+            func_name = key
+            func = getattr(self, func_name)
+
+            Button(parent=self,
+                   func=func,
+                   text=OPERATORS[key]["text"],
+                   col=OPERATORS[key]["col"],
+                   row=OPERATORS[key]["row"],
+                   font=main_font)
+
+        for key in NUM_POSITION.keys():
+            Button(parent=self,
+                   func=lambda k=key: self.num_click(k),
+                   text=str(key),
+                   col=NUM_POSITION[key]["col"],
+                   row=NUM_POSITION[key]["row"],
+                   font=main_font,
+                   span=NUM_POSITION[key]["span"])
+
+        for key in MATH_POSITIONS.keys():
+            Button(parent=self,
+                   func=lambda k=key: self.operator_click(k),
+                   text=MATH_POSITIONS[key]["character"],
+                   col=MATH_POSITIONS[key]["col"],
+                   row=MATH_POSITIONS[key]["row"],
+                   font=main_font)
+
+
+    def clear(self):
+        print("clear")
+
+    def percent(self):
+        print("%")
+
+    def invert(self):
+        print("invert")
+
+    def num_click(self, value):
+        print(str(value))
+
+    def operator_click(self, val):
+        print(val)
+
 
 class OutputLabel(ctk.CTkLabel):
     def __init__(self, parent, row, anchor, font, string_var):
