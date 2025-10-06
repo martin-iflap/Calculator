@@ -18,6 +18,9 @@ class Calculator(ctk.CTk):
         self.result_string = ctk.StringVar(value="0")
         self.formula_string = ctk.StringVar(value="")
 
+        self.display_nums = []
+        self.full_operation = []
+
         self.create_widgets()
 
 
@@ -65,7 +68,10 @@ class Calculator(ctk.CTk):
 
 
     def clear(self):
-        print("clear")
+        self.result_string.set("")
+        self.formula_string.set("")
+        self.display_nums.clear()
+        self.full_operation.clear()
 
     def percent(self):
         print("%")
@@ -74,10 +80,32 @@ class Calculator(ctk.CTk):
         print("invert")
 
     def num_click(self, value):
-        print(str(value))
+        self.display_nums.append(str(value))
+        full_num = "".join(self.display_nums)
+        self.result_string.set(full_num)
 
-    def operator_click(self, val):
-        print(val)
+    def operator_click(self, value):
+        current_num = "".join(self.display_nums)
+        if current_num:
+            self.full_operation.append(current_num)
+            if value != "=":
+                self.full_operation.append(value)
+                self.display_nums.clear()
+                self.result_string.set("")
+                self.formula_string.set(" ".join(self.full_operation))
+
+            else:
+                formula = " ".join(self.full_operation)
+                result = eval(formula)
+                if isinstance(result, float):
+                    if result.is_integer():
+                        result = int(result)
+                    else:
+                        result = round(result, 3)
+                self.result_string.set(result)
+                self.formula_string.set(formula)
+                self.display_nums = [str(result)]
+                self.full_operation.clear()
 
 
 class OutputLabel(ctk.CTkLabel):
