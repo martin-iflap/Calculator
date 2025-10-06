@@ -25,13 +25,17 @@ NUM_POSITION = {
     9  : {"col": 2, "row": 3, "span": 1}}
 
 MATH_POSITIONS = {
-    "/" : {"col": 3, "row": 2, "character": "/", "operator": "/"},
-    "*" : {"col": 3, "row": 3, "character": "x", "operator": "*"},
-    "-" : {"col": 3, "row": 4, "character": "-", "operator": "-"},
-    "=" : {"col": 3, "row": 6, "character": "=", "operator": "="},
-    "+" : {"col": 3, "row": 5, "character": "+", "operator": "+"}}
+    "/" : {"col": 3, "row": 2, "character": "/"},
+    "*" : {"col": 3, "row": 3, "character": "x"},
+    "-" : {"col": 3, "row": 4, "character": "-"},
+    "=" : {"col": 3, "row": 6, "character": "="},
+    "+" : {"col": 3, "row": 5, "character": "+"}}
 
 OPERATORS = {
     "clear": {"col": 0, "row": 2, "text": "AC"},
     "invert": {"col": 1, "row": 2, "text": "+-"},
     "percent": {"col": 2, "row": 2, "text": "%"}}
+
+COLORS = {
+    "nums": {"fg_color": "#444444", "hover": "grey", "text_color": "white"},
+    "operations_and_math": {"fg_color": "orange", "hover": "#FFC78F", "text_color": "white"}}
