@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from buttons import Button
+from buttons import Button, OutputLabel
 from settings import *
 
 class Calculator(ctk.CTk):
@@ -93,10 +93,7 @@ class Calculator(ctk.CTk):
             current_num = "".join(self.display_num)
             if current_num:
                 new_num = float(current_num) / 100
-                if new_num.is_integer():
-                    new_num = int(new_num)
-                else:
-                    new_num = round(new_num, 6)
+                new_num = self.remove_float(new_num, 6)
                 self.display_num = [str(new_num)]
                 self.result_string.set(str(new_num))
 
@@ -105,10 +102,7 @@ class Calculator(ctk.CTk):
         current_num = "".join(self.display_num)
         if current_num:
             new_num = float(current_num) * -1
-            if new_num.is_integer():
-                new_num = int(new_num)
-            else:
-                new_num = round(new_num, 3)
+            new_num = self.remove_float(new_num, 3)
             self.display_num = [str(new_num)]
             self.result_string.set("".join(self.display_num))
 
@@ -135,21 +129,21 @@ class Calculator(ctk.CTk):
             else:
                 formula = " ".join(self.full_operation)
                 result = eval(formula)
-                if isinstance(result, float):
-                    if result.is_integer():
-                        result = int(result)
-                    else:
-                        result = round(result, 3)
+                result = self.remove_float(float(result), 3)
                 self.result_string.set(result)
                 self.formula_string.set(formula)
                 self.display_num = [str(result)]
                 self.full_operation.clear()
 
+    def remove_float(self, num: float, decimals: int) -> float|int:
+        """Turn non-decimal strings into integers
+           Round decimal strings to 3 places"""
+        if num.is_integer():
+            num = int(num)
+        else:
+            num = round(num, decimals)
+        return num
 
-class OutputLabel(ctk.CTkLabel):
-    def __init__(self, parent, row, anchor, font, string_var):
-        super().__init__(master=parent, font=font, textvariable=string_var)
-        self.grid(column=0, columnspan = 4 ,row = row, sticky = anchor, padx=10)
 
 if __name__ == "__main__":
     app = Calculator()
