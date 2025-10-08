@@ -1,4 +1,4 @@
-from customtkinter import  CTkButton
+from customtkinter import  CTkButton, CTkLabel
 from settings import *
 
 
@@ -13,3 +13,8 @@ class Button(CTkButton):
                          hover_color = hover,
                          text_color = text_color)
         self.grid(column = col, row = row, columnspan=span, sticky="nsew", padx=STYLING["gap"], pady=STYLING["gap"])
+
+class OutputLabel(CTkLabel):
+    def __init__(self, parent, row, anchor, font, string_var):
+        super().__init__(master=parent, font=font, textvariable=string_var)
+        self.grid(column=0, columnspan = 4 ,row = row, sticky = anchor, padx=10)
