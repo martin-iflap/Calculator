@@ -59,3 +59,40 @@ def test_minus_negative(calc: Calculator) -> None:
     calc.display_num = []
     create_operation(calc, 6, "-", 4, True, True)
     assert calc.result_string.get() == "-2"
+
+def test_multiplication(calc: Calculator) -> None:
+    """Test multiplication"""
+    create_operation(calc, 5, "*", 5, False, False)
+    assert calc.result_string.get() == "25"
+
+def test_multiply_negative(calc: Calculator) -> None:
+    """Test negative number multiplication"""
+    create_operation(calc, 5, "*", 5, False, True)
+    assert calc.result_string.get() == "-25"
+# negative times negative
+    calc.display_num = []
+    create_operation(calc, 5, "*", 5, True, True)
+    assert calc.result_string.get() == "25"
+
+def test_division(calc: Calculator) -> None:
+    """Test division"""
+    create_operation(calc, 30, "/", 5, False, False)
+    assert calc.result_string.get() == "6"
+
+def test_divide_negative(calc: Calculator) -> None:
+    """Test negative number division"""
+    create_operation(calc, 30, "/", 5, False, True)
+    assert calc.result_string.get() == "-6"
+# negative divided by negative
+    calc.display_num = []
+    create_operation(calc, 30, "/", 5, True, True)
+    assert calc.result_string.get() == "6"
+
+def test_zero_division(calc: Calculator) -> None:
+    """Test division by zero"""
+    create_operation(calc, 30, "/", 0, False, False)
+    assert calc.result_string.get() == "Error"
+    assert calc.full_operation == []
+    assert calc.display_num == []
+
+
