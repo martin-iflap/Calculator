@@ -24,7 +24,7 @@ class Calculator(ctk.CTk):
         self.create_widgets()
 
 
-    def create_widgets(self):
+    def create_widgets(self) -> None:
         """Create all the widgets with for loops"""
         main_font = ctk.CTkFont(family=FONT, size=NORMAL_FONT_SIZE)
         result_font = ctk.CTkFont(family=FONT, size=OUTPUT_FONT_SIZE)
@@ -69,24 +69,21 @@ class Calculator(ctk.CTk):
                    text_color=COLORS["operations_and_math"]["text_color"])
 
 
-    def clear(self):
+    def clear(self) -> None:
         """Reset string variables and clear lists"""
         self.result_string.set("0")
         self.formula_string.set("")
         self.display_num.clear()
         self.full_operation.clear()
 
-    def percent(self):
+    def percent(self) -> None:
         """Turn the current number into a percentage of the preceding number"""
         current_operation = "".join(self.full_operation)
         if current_operation:
             main_num = self.full_operation[-2]
             current_num = "".join(self.display_num)
             new_num = (float(main_num) / 100 * float(current_num))
-            if new_num.is_integer():
-                new_num = int(new_num)
-            else:
-                new_num = round(new_num, 3)
+            new_num = self.remove_float(new_num, 3)
             self.result_string.set(str(current_num)+"%")
             self.display_num = [str(new_num)]
         else:
@@ -97,23 +94,26 @@ class Calculator(ctk.CTk):
                 self.display_num = [str(new_num)]
                 self.result_string.set(str(new_num))
 
-    def invert(self):
+    def invert(self) -> None:
         """Multiply current number by -1"""
-        current_num = "".join(self.display_num)
+        current_num = "".join(self.display_num).strip("()")
         if current_num:
             new_num = float(current_num) * -1
             new_num = self.remove_float(new_num, 3)
-            self.display_num = [str(new_num)]
+            if new_num < 0:
+                self.display_num = ["("+str(new_num)+")"]
+            else:
+                self.display_num = [str(new_num)]
             self.result_string.set("".join(self.display_num))
 
-    def num_click(self, value):
+    def num_click(self, value) -> None:
         """Append the value of the clicked number inside the display_num list
            and refresh result string"""
         self.display_num.append(str(value))
         full_num = "".join(self.display_num)
         self.result_string.set(full_num)
 
-    def operator_click(self, value):
+    def operator_click(self, value) -> None:
         """Append the display_num and the operator to full_operation list
            If operator is = compute and display result using eval
            Set the result to be the display_num"""
@@ -128,7 +128,14 @@ class Calculator(ctk.CTk):
 
             else:
                 formula = " ".join(self.full_operation)
-                result = eval(formula)
+                try:
+                    result = eval(formula)
+                except ZeroDivisionError:
+                    self.result_string.set("Error")
+                    self.formula_string.set(formula)
+                    self.display_num.clear()
+                    self.full_operation.clear()
+                    return
                 result = self.remove_float(float(result), 3)
                 self.result_string.set(result)
                 self.formula_string.set(formula)
