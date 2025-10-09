@@ -99,7 +99,7 @@ def test_invert(calc: Calculator) -> None:
     """Test invert function"""
     calc.num_click(5)
     calc.invert()
-    assert calc.result_string.get() == "-5"
+    assert calc.result_string.get() == "(-5)"
     calc.invert()
     assert calc.result_string.get() == "5"
 
