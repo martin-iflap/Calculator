@@ -95,4 +95,29 @@ def test_zero_division(calc: Calculator) -> None:
     assert calc.full_operation == []
     assert calc.display_num == []
 
+def test_invert(calc: Calculator) -> None:
+    """Test invert function"""
+    calc.num_click(5)
+    calc.invert()
+    assert calc.result_string.get() == "-5"
+    calc.invert()
+    assert calc.result_string.get() == "5"
+
+def test_percent_relative(calc: Calculator) -> None:
+    """Test percent function"""
+    calc.num_click(50)
+    calc.operator_click("+")
+    calc.num_click(10)
+    calc.percent()
+    assert calc.result_string.get() == "10%"
+    calc.operator_click("=")
+    assert calc.result_string.get() == "55"
+
+def test_percent_alone(calc: Calculator) -> None:
+    """Test percent function without preceding number"""
+    calc.num_click(100)
+    calc.percent()
+    assert calc.result_string.get() == "1"
+    calc.percent()
+    assert calc.result_string.get() == "0.01"
 
